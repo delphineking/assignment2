@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+    <html>
+    <head>
+        <title>
+            JsPsych Assignment 2
+        </title>
+        <script src="https://unpkg.com/jspsych@7.3.0"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.1"></script>
+        <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css"
+              rel="stylesheet" type="text/css" />
+        <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.1"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.1"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.1"></script>
+        <script src="list1.js"></script>
+        <script src="list2.js"></script>
+        <script src="list3.js"></script>
+        <script src="list4.js"></script>
+
+    </head>
+<body>
+<script>
+
+    const jsPsych = initJsPsych({
+        on_finish: function () {
+            jsPsych.data.displayData();
+        }
+    });
+
+
+
+    var instruction = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: "welcome to the experiment",
+  choices: ['continue'],
+  prompt: "<p>click to advance to next screen</p>"
+};
+
+ 
+   var sentence = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: jsPsych.timelineVariable('prompt'),
+        choices: " ",
+        }
+
+    var prime = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: jsPsych.timelineVariable('prime_given'),
+        choices: "NO_KEYS",
+        trial_duration: 250
+    }
+
+    var state = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '',
+        choices: ["know", "don't know", "other word in mind", "tip of the tongue"],
+        
+    }
+
+    var response = {
+  type: jsPsychSurveyText,
+  preamble: jsPsych.timelineVariable('prompt'),
+  questions: [
+    {prompt: 'Describe your reaction to the sentence above', rows: 5}
+  ]
+}
+
+    var end_experiment = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: 'Thank you for participating! Click any key to end the experiment.',
+    };
+
+
+     var list = [1, 2, 3, 4]
+    var CONDITION = list[Math.floor(Math.random() * list.length)];
+
+    var teststimuli = []
+    if (CONDITION == 1) { teststimuli = list1 }
+    else if (CONDITION == 2) { teststimuli = List2 }
+    else if (CONDITION == 3) { teststimuli = list3 }
+    else { teststimuli = list4 }
+
+    console.log("list=", list)
+    console.log("CONDITION=", CONDITION)
+    console.log("teststimuli=", teststimuli)
+
+    var experiment_procedure = {
+        timeline: [sentence, prime, state, response],
+        timeline_variables: teststimuli,
+        randomize_order: false
+    };
+
+    jsPsych.run([instruction, experiment_procedure, end_experiment]);
+
+    </script>
+
+</body>
+</html>
