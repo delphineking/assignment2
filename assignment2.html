@@ -32,7 +32,14 @@
   type: jsPsychHtmlButtonResponse,
   stimulus: "welcome to the experiment",
   choices: ['continue'],
-  prompt: "<p>click to advance to next screen</p>"
+  prompt: "<p>click to advance to next screen</p>",
+data: {
+            subject: subject_id,
+
+    prime_condition: jsPsych.timelineVariable('prime_condition'),
+    list: jsPsych.timelineVariable('list')
+        }
+
 };
 
  
@@ -40,33 +47,61 @@
         type: jsPsychHtmlKeyboardResponse,
         stimulus: jsPsych.timelineVariable('prompt'),
         choices: " ",
-        }
+        data: {
+            subject: subject_id,
+
+    prime_condition: jsPsych.timelineVariable('prime_condition'),
+    list: jsPsych.timelineVariable('list')
+        }}
 
     var prime = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: jsPsych.timelineVariable('prime_given'),
         choices: "NO_KEYS",
-        trial_duration: 250
-    }
+        trial_duration: 250,
+   data: {
+            subject: subject_id,
+
+    prime_condition: jsPsych.timelineVariable('prime_condition'),
+    list: jsPsych.timelineVariable('list')
+        } }
 
     var state = {
         type: jsPsychHtmlButtonResponse,
         stimulus: '',
         choices: ["know", "don't know", "other word in mind", "tip of the tongue"],
         
-    }
+    data: {
+            subject: subject_id,
+
+    prime_condition: jsPsych.timelineVariable('prime_condition'),
+    list: jsPsych.timelineVariable('list')
+        }}
 
     var response = {
   type: jsPsychSurveyText,
   preamble: jsPsych.timelineVariable('prompt'),
   questions: [
     {prompt: 'Describe your reaction to the sentence above', rows: 5}
-  ]
+  ],
+
+  data: {
+            subject: subject_id,
+
+    prime_condition: jsPsych.timelineVariable('prime_condition'),
+    list: jsPsych.timelineVariable('list')
+        }
 }
 
     var end_experiment = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: 'Thank you for participating! Click any key to end the experiment.',
+        data: {
+            subject: subject_id,
+
+    prime_condition: jsPsych.timelineVariable('prime_condition'),
+    list: jsPsych.timelineVariable('list')
+        }
     };
 
 
@@ -74,9 +109,6 @@
     var CONDITION = list[Math.floor(Math.random() * list.length)];
 
   var subject_id = Math.floor(Math.random() * 100000)
-    subject_id
-    prime_condition
-    list;
 
     var teststimuli = []
     if (CONDITION == 1) { teststimuli = list1 }
